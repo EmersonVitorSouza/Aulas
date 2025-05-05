@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Alunos</title>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <h1>Cadastro de Alunos</h1>
+
+    <form id="formCadastro">
+        Nome: <input type="text" id="nome" required><br><br>
+        Email: <input type="email" id="email" required><br><br>
+        <button type="submit">Cadastrar</button>
+        <button type="button" id="btnExibir">Exibir Alunos</button>
+    </form>
+
+    <div id="mensagem" style="margin-top:20px; color:green;"></div>
+    <hr>
+    <div id="listaAlunos"></div>
+</body>
+</html>

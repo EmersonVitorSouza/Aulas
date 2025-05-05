@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arte & Mãos - Artesanato Feito com Amor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f5f0;
+            color: #5a4a42;
+        }
+        
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .handmade-bg {
+            background-color: #fff8f0;
+            background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+        }
+        
+        .product-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #c17a62;
+            transition: width 0.3s;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background-color: #c17a62;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #a86953;
+            transform: translateY(-2px);
+        }
+        
+        .category-btn {
+            transition: all 0.3s;
+        }
+        
+        .category-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .banner {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1604176354202-3c32dc2c93da?q=80&w=1470&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="handmade-bg">
+    <!-- Top Bar -->
+    <div class="bg-amber-900 text-white text-sm py-2 px-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div>
+                <i class="fas fa-truck mr-1"></i> Frete grátis para compras acima de R$ 150
+            </div>
+            <div class="flex space-x-4">
+                <a href="#" class="hover:text-amber-200"><i class="fas fa-phone-alt mr-1"></i> (11) 98765-4321</a>
+                <a href="#" class="hover:text-amber-200"><i class="fas fa-envelope mr-1"></i> contato@arteemaos.com</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Header -->
+    <header class="py-6 px-4">
+        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center mb-4 md:mb-0">
+                <i class="fas fa-hands-helping text-3xl text-amber-700 mr-2"></i>
+                <h1 class="title-font text-3xl font-bold text-amber-900">Arte & Mãos</h1>
+            </div>
+            
+            <!-- Search -->
+            <div class="relative w-full md:w-1/3 mb-4 md:mb-0">
+                <input type="text" placeholder="Buscar produtos..." class="w-full py-2 px-4 pr-10 rounded-full border border-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                <button class="absolute right-0 top-0 mt-2 mr-4 text-amber-700">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <!-- Icons -->
+            <div class="flex space-x-6">
+                <a href="#" class="text-amber-900 hover:text-amber-700 relative">
+                    <i class="fas fa-heart text-xl"></i>
+                    <span class="absolute -top-2 -right-2 bg-amber-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </a>
+                <a href="#" class="text-amber-900 hover:text-amber-700 relative">
+                    <i class="fas fa-user text-xl"></i>
+                </a>
+                <a href="#" class="text-amber-900 hover:text-amber-700 relative">
+                    <i class="fas fa-shopping-cart text-xl"></i>
+                    <span class="absolute -top-2 -right-2 bg-amber-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">2</span>
+                </a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm py-4 sticky top-0 z-10">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0">
+                <div class="flex space-x-1 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto">
+                    <button class="category-btn bg-amber-100 text-amber-800 px-4 py-1 rounded-full text-sm whitespace-nowrap">Todos</button>
+                    <button class="category-btn bg-white text-amber-800 px-4 py-1 rounded-full text-sm whitespace-nowrap">Cerâmica</button>
+                    <button class="category-btn bg-white text-amber-800 px-4 py-1 rounded-full text-sm whitespace-nowrap">Têxtil</button>
+                    <button class="category-btn bg-white text-amber-800 px-4 py-1 rounded-full text-sm whitespace-nowrap">Madeira</button>
+                    <button class="category-btn bg-white text-amber-800 px-4 py-1 rounded-full text-sm whitespace-nowrap">Decoração</button>
+                    <button class="category-btn bg-white text-amber-800 px-4 py-1 rounded-full text-sm whitespace-nowrap">Bijuterias</button>
+                    <button class="category-btn bg-white text-amber-800 px-4 py-1 rounded-full text-sm whitespace-nowrap">Papelaria</button>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="nav-link text-amber-900 font-medium">Home</a>
+                    <a href="#" class="nav-link text-amber-900 font-medium">Loja</a>
+                    <a href="#" class="nav-link text-amber-900 font-medium">Artistas</a>
+                    <a href="#" class="nav-link text-amber-900 font-medium">Sobre</a>
+                    <a href="#" class="nav-link text-amber-900 font-medium">Contato</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Banner -->
+    <div class="banner text-white py-20 px-4 mb-12">
+        <div class="container mx-auto text-center">
+            <h2 class="title-font text-4xl md:text-5xl mb-4">Artesanato Feito com Amor</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Peças únicas criadas por artesãos talentosos de todo o Brasil</p>
+            <button class="btn-primary text-white font-bold py-3 px-8 rounded-full">Explorar Coleção</button>
+        </div>
+    </div>
+    
+    <!-- Featured Products -->
+    <section class="py-12 px-4">
+        <div class="container mx-auto">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="title-font text-3xl text-amber-900">Destaques</h2>
+                <a href="#" class="text-amber-700 hover:text-amber-900 font-medium">Ver todos <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <!-- Product 1 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1605000797499-95a51c5269ae?q=80&w=1471&auto=format&fit=crop" alt="Vaso de cerâmica" class="w-full h-64 object-cover">
+                        <div class="absolute top-2 right-2 bg-amber-600 text-white text-xs font-bold px-2 py-1 rounded">NOVO</div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg">Vaso Artesanal</h3>
+                            <span class="text-amber-700 font-bold">R$ 89,90</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">Vaso de cerâmica pintado à mão</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex text-amber-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="text-gray-500 text-xs ml-1">(24)</span>
+                            </div>
+                            <button class="btn-primary text-white text-sm py-2 px-4 rounded">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1583744949094-bf4c7a8670f6?q=80&w=1470&auto=format&fit=crop" alt="Cesta de palha" class="w-full h-64 object-cover">
+                        <div class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">-20%</div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg">Cesta de Palha</h3>
+                            <div>
+                                <span class="text-gray-400 text-sm line-through mr-1">R$ 75,00</span>
+                                <span class="text-amber-700 font-bold">R$ 60,00</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">Cesta trançada em fibra natural</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex text-amber-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span class="text-gray-500 text-xs ml-1">(18)</span>
+                            </div>
+                            <button class="btn-primary text-white text-sm py-2 px-4 rounded">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1616486334852-6d376a9c8a1d?q=80&w=1374&auto=format&fit=crop" alt="Pulseira artesanal" class="w-full h-64 object-cover">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg">Pulseira de Sementes</h3>
+                            <span class="text-amber-700 font-bold">R$ 35,90</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">Pulseira feita com sementes naturais</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex text-amber-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="text-gray-500 text-xs ml-1">(32)</span>
+                            </div>
+                            <button class="btn-primary text-white text-sm py-2 px-4 rounded">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3c91?q=80&w=1430&auto=format&fit=crop" alt="Quadro decorativo" class="w-full h-64 object-cover">
+                        <div class="absolute top-2 right-2 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded">ECO</div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg">Quadro em Madeira</h3>
+                            <span class="text-amber-700 font-bold">R$ 120,00</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">Pintura em madeira reciclada</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex text-amber-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="text-gray-500 text-xs ml-1">(15)</span>
+                            </div>
+                            <button class="btn-primary text-white text-sm py-2 px-4 rounded">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Artisans Section -->
+    <section class="py-12 px-4 bg-amber-50">
+        <div class="container mx-auto">
+            <h2 class="title-font text-3xl text-amber-900 text-center mb-12">Conheça Nossos Artesãos</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Artisan 1 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm flex flex-col items-center p-6">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a05d5e885a?q=80&w=1470&auto=format&fit=crop" alt="Artesã Maria" class="w-32 h-32 rounded-full object-cover mb-4 border-4 border-amber-100">
+                    <h3 class="title-font text-xl mb-2">Maria da Silva</h3>
+                    <p class="text-amber-700 text-sm mb-4">Ceramista • Minas Gerais</p>
+                    <p class="text-gray-600 text-center mb-4">"Crio peças únicas com técnicas passadas por gerações em minha família."</p>
+                    <a href="#" class="text-amber-700 hover:text-amber-900 text-sm font-medium">Ver produtos <i class="fas fa-arrow-right ml-1"></i></a>
+                </div>
+                
+                <!-- Artisan 2 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm flex flex-col items-center p-6">
+                    <img src="https://images.unsplash.com/photo-1562788865-5638fade8516?q=80&w=1374&auto=format&fit=crop" alt="Artesão João" class="w-32 h-32 rounded-full object-cover mb-4 border-4 border-amber-100">
+                    <h3 class="title-font text-xl mb-2">João Ribeiro</h3>
+                    <p class="text-amber-700 text-sm mb-4">Entalhador • Bahia</p>
+                    <p class="text-gray-600 text-center mb-4">"Transformo madeira em arte, preservando a essência da natureza em cada peça."</p>
+                    <a href="#" class="text-amber-700 hover:text-amber-900 text-sm font-medium">Ver produtos <i class="fas fa-arrow-right ml-1"></i></a>
+                </div>
+                
+                <!-- Artisan 3 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm flex flex-col items-center p-6">
+                    <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1374&auto=format&fit=crop" alt="Artesã Ana" class="w-32 h-32 rounded-full object-cover mb-4 border-4 border-amber-100">
+                    <h3 class="title-font text-xl mb-2">Ana Claudia</h3>
+                    <p class="text-amber-700 text-sm mb-4">Tecelã • Ceará</p>
+                    <p class="text-gray-600 text-center mb-4">"Meus tecidos contam histórias através de cores e padrões inspirados no Nordeste."</p>
+                    <a href="#" class="text-amber-700 hover:text-amber-900 text-sm font-medium">Ver produtos <i class="fas fa-arrow-right ml-1"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials -->
+    <section class="py-12 px-4">
+        <div class="container mx-auto">
+            <h2 class="title-font text-3xl text-amber-900 text-center mb-12">O Que Dizem Nossos Clientes</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Testimonial 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-amber-400 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-gray-500 text-sm">2 semanas atrás</span>
+                    </div>
+                    <p class="text-gray-700 mb-4">"Comprei um vaso de cerâmica que superou minhas expectativas! A qualidade e o cuidado no detalhe são impressionantes."</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Cliente" class="w-10 h-10 rounded-full mr-3">
+                        <div>
+                            <h4 class="font-medium">Carolina Mendes</h4>
+                            <p class="text-gray-500 text-sm">São Paulo, SP</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-amber-400 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-gray-500 text-sm">1 mês atrás</span>
+                    </div>
+                    <p class="text-gray-700 mb-4">"Adorei a cesta de palha que comprei! Perfeita para minha sala e chegou muito bem embalada. Com certeza comprarei mais itens."</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Cliente" class="w-10 h-10 rounded-full mr-3">
+                        <div>
+                            <h4 class="font-medium">Roberto Almeida</h4>
+                            <p class="text-gray-500 text-sm">Belo Horizonte, MG</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Newsletter -->
+    <section class="py-12 px-4 bg-amber-900 text-white">
+        <div class="container mx-auto max-w-4xl text-center">
+            <h2 class="title-font text-3xl mb-4">Junte-se à Nossa Comunidade</h2>
+            <p class="mb-8">Receba novidades, promoções exclusivas e conheça as histórias por trás de cada peça.</p>
+            
+            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                <input type="email" placeholder="Seu melhor e-mail" class="flex-grow px-4 py-3 rounded focus:outline-none text-gray-900">
+                <button type="submit" class="bg-amber-700 hover:bg-amber-800 text-white font-bold py-3 px-6 rounded transition">Assinar</button>
+            </form>
+            
+            <p class="text-amber-200 text-sm mt-4">Não compartilhamos seus dados. Respeitamos sua privacidade.</p>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-amber-800 text-white py-12 px-4">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- About -->
+                <div>
+                    <h3 class="title-font text-xl mb-4">Arte & Mãos</h3>
+                    <p class="text-amber-100 mb-4">Conectamos artesãos talentosos com pessoas que valorizam peças únicas e feitas à mão.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-amber-100 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-amber-100 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-amber-100 hover:text-white"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Links -->
+                <div>
+                    <h3 class="font-bold mb-4">Links Úteis</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-amber-100 hover:text-white">Minha conta</a></li>
+                        <li><a href="#" class="text-amber-100 hover:text-white">Meus pedidos</a></li>
+                        <li><a href="#" class="text-amber-100 hover:text-white">Lista de desejos</a></li>
+                        <li><a href="#" class="text-amber-100 hover:text-white">Rastreamento</a></li>
+                        <li><a href="#" class="text-amber-100 hover:text-white">Torne-se um artesão</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Customer Service -->
+                <div>
+                    <h3 class="font-bold mb-4">Atendimento</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-amber-100 hover:text-white">Central de ajuda</a></li>
+                        <li><a href="#" class="text-amber-100 hover:text-white">Política de trocas</a></li>
+                        <li><a href="#" class="text-amber-100 hover:text-white">Termos de uso</a></li>
+                        <li><a href="#" class="text-amber-100 hover:text-white">Política de privacidade</a></li>
+                        <li><a href="#" class="text-amber-100 hover:text-white">Contato</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact -->
+                <div>
+                    <h3 class="font-bold mb-4">Contato</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-2 text-amber-200"></i>
+                            <span class="text-amber-100">Rua dos Artesãos, 123<br>São Paulo, SP</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt mr-2 text-amber-200"></i>
+                            <span class="text-amber-100">(11) 98765-4321</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-2 text-amber-200"></i>
+                            <span class="text-amber-100">contato@arteemaos.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-amber-700 mt-8 pt-8 text-center text-amber-100 text-sm">
+                <p>© 2023 Arte & Mãos. Todos os direitos reservados.</p>
+                <p class="mt-2">Pagamentos seguros: <i class="fab fa-cc-visa ml-2"></i> <i class="fab fa-cc-mastercard"></i> <i class="fab fa-cc-paypal"></i> <i class="fab fa-pix"></i></p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Shopping Cart Sidebar -->
+    <div id="cartSidebar" class="fixed top-0 right-0 w-full md:w-96 h-full bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50 overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="title-font text-xl text-amber-900">Seu Carrinho</h3>
+                <button onclick="closeCart()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Cart Items -->
+            <div class="space-y-4 mb-6">
+                <!-- Item 1 -->
+                <div class="flex border-b pb-4">
+                    <img src="https://images.unsplash.com/photo-1605000797499-95a51c5269ae?q=80&w=1471&auto=format&fit=crop" alt="Vaso de cerâmica" class="w-20 h-20 object-cover rounded">
+                    <div class="ml-4 flex-grow">
+                        <h4 class="font-medium">Vaso Artesanal</h4>
+                        <p class="text-sm text-gray-600">Cerâmica</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <div class="flex items-center border rounded">
+                                <button class="px-2 py-1 text-gray-600">-</button>
+                                <span class="px-2">1</span>
+                                <button class="px-2 py-1 text-gray-600">+</button>
+                            </div>
+                            <span class="font-medium">R$ 89,90</span>
+                        </div>
+                    </div>
+                    <button class="text-gray-400 hover:text-red-500 ml-2">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                
+                <!-- Item 2 -->
+                <div class="flex border-b pb-4">
+                    <img src="https://images.unsplash.com/photo-1616486334852-6d376a9c8a1d?q=80&w=1374&auto=format&fit=crop" alt="Pulseira artesanal" class="w-20 h-20 object-cover rounded">
+                    <div class="ml-4 flex-grow">
+                        <h4 class="font-medium">Pulseira de Sementes</h4>
+                        <p class="text-sm text-gray-600">Bijuteria</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <div class="flex items-center border rounded">
+                                <button class="px-2 py-1 text-gray-600">-</button>
+                                <span class="px-2">2</span>
+                                <button class="px-2 py-1 text-gray-600">+</button>
+                            </div>
+                            <span class="font-medium">R$ 71,80</span>
+                        </div>
+                    </div>
+                    <button class="text-gray-400 hover:text-red-500 ml-2">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Cart Summary -->
+            <div class="border-t pt-4">
+                <div class="flex justify-between mb-2">
+                    <span>Subtotal</span>
+                    <span>R$ 161,70</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span>Frete</span>
+                    <span>Grátis</span>
+                </div>
+                <div class="flex justify-between font-bold text-lg mt-4">
+                    <span>Total</span>
+                    <span>R$ 161,70</span>
+                </div>
+                
+                <button class="btn-primary w-full py-3 rounded mt-6 font-bold">
+                    Finalizar Compra
+                </button>
+                
+                <a href="#" class="block text-center text-amber-700 hover:text-amber-900 mt-4 text-sm">
+                    Continuar comprando
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+    
+    <script>
+        // Cart functionality
+        function openCart() {
+            document.getElementById('cartSidebar').classList.remove('translate-x-full');
+            document.getElementById('overlay').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+        
+        function closeCart() {
+            document.getElementById('cartSidebar').classList.add('translate-x-full');
+            document.getElementById('overlay').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+        
+        // Simulate adding to cart
+        document.querySelectorAll('.product-card button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                openCart();
+                
+                // Here you would normally add the product to the cart
+                const productCard = this.closest('.product-card');
+                const productName = productCard.querySelector('h3').textContent;
+                alert(`${productName} adicionado ao carrinho!`);
+            });
+        });
+        
+        // Mobile menu toggle (if needed)
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>

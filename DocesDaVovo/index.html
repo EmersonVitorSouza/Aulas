@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <title>Doces Da Vovó</title>
+</head>
+
+<body>
+    <header>
+        <a href="index.html"><img class="logo" src="logo.png" alt="Vovó"></a>
+        <h3 class="titulo">Doces da Vovó</h3>
+        <button class="botaoPed" onclick="window.open('https://wa.me/5534996698226?text=Gostaria%20de%20fazer%20um%20pedido!')">Fazer Pedido</button>
+    </header>
+    <!--Circulo Marrom-->
+    <section class="circulo">
+        <div class="sloganBotao">
+            <p class="slogan">Tradição que aquece o coração!</p>
+            <!--<button class="botaoProd">Nossos Produtos</button>-->
+        </div>
+        <img class="imgSlogan" src="slogan.jpg" alt="Fmaília Dona Maria">
+    </section>
+
+    <main id="#produtosNav">
+        <h3 class="tituloProdutos">Nossos Produtos</h3>
+        <div class="listaProdutos">
+            <div class="produtos">
+                <!--Primeiro Produto-->
+                <img class="imgProduto" src="produto1.jpg" alt="Trufas">
+                <div class="texto">
+                    <p>Trufas de Chocolate</p>
+                </div>
+                <span class="preco">R$7,00</span>
+            </div>
+            <!--Segundo Produto-->
+            <div class="produtos">
+                <img class="imgProduto" src="produto2.jpg" alt="Brigadeiro">
+                <div class="texto">
+                    <p>Brigadeiro</p>
+                </div>
+                <span class="preco">R$4,00</span>
+            </div>
+            <!--Terceiro Produto-->
+            <div class="produtos">
+                <img class="imgProduto" src="bolo kit kat.jpg" alt="Bolo RedVelvet">
+                <div class="texto">
+                    <p>Bolo Kit Kat</p>
+                </div>
+                <span class="preco">R$70,00</span>
+            </div>
+            <!--Quarto Produto-->
+            <div class="produtos">
+                <img class="imgProduto" src="produto4.jpg" alt="Bolo de Chocolate">
+                <div class="texto">
+                    <p>Bolo de Chocolate</p>
+                </div>
+                <span class="preco">R$55,00</span>
+            </div>
+        </div>
+        <!--Quadro de Suestões ou Sobre Nós-->
+        <div class="quadroS">
+            <h3 class="tituloSug">Alguma dúvida ou sugestão?</h3>
+            <div class="textoImg">
+                <p class="textoSug">Caso tenha alguma dúvida ou sugestão sobre nosso site, utilize os campos abaixo e
+                    nos diga sua opinião!</p>
+                <img class="logoS" src="logo.png" alt="Doces da Vovó">
+            </div>
+            <!--Formulário de Sugestão-->
+            <form id="sugestaoForm" action="www.google.com" method="post" target="_blank">
+                <input type="text" name="nome" id="nome" placeholder="Nome"  class="camposForm" required>
+                <input type="email" name="email" id="email" placeholder="E-mail" class="camposForm" required>
+                <textarea name="mensagem" id="mensagem" rows="4"
+                    placeholder="Escreva aqui sua mensagem..." class="textForm" required></textarea>
+                <span class="spanErro" id="error"></span>
+                <button class="botaoSug" id="enviarBotao">Fazer Sugestão</button>
+            </form>
+           <!--Verificar mensagem de erro do Try Catch e/ou Verificar sugestões caso haja alguma-->
+           <a class="sug" href="salvar.php">Ver Sugestões Enviadas</a>
+        </div>
+    </main>
+    <footer>
+        <p>© - Doces da Vovó 2025 - Todos os Direitos Reservados</p>
+    </footer>
+    <script src="verificarForm.js" defer></script>
+</body>
+</html> 

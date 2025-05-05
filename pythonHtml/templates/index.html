@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cadastro de Alunos</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+  </head>
+  <body>
+    <h1>Cadastro de Alunos</h1>
+    <form id="formCadastro">
+      Nome:<br /><input type="text" id="nome" required /><br />
+      Email:<br /><input type="email" id="email" required /><br />
+      <button type="submit">Cadastrar</button>
+      <button type="button" id="btnExibir">Exibir Alunos</button>
+    </form>
+
+    <div id="mensagem"></div>
+
+    <h2>Lista de Alunos</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody id="resultado">
+        {% for aluno in alunos %}
+        <tr>
+          <td>{{ aluno.id }}</td>
+          <td>{{ aluno.nome }}</td>
+          <td>{{ aluno.email }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="3">Nenhum aluno cadastrado.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

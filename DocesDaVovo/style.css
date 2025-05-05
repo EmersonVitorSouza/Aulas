@@ -1,0 +1,272 @@
+* {
+    margin: 0
+}
+
+body {
+    font-family: 'Times New Roman', Times, serif;
+    color: #8B5A2B;
+    background-color: #ffefe0;
+}
+
+main {
+    text-align: center;
+    justify-items: center;
+}
+
+header {
+    width: 100%;
+    background-color: #8B5A2B;
+    color: white;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: fixed;
+}
+
+.logo {
+    width: 150px;
+    margin-left: 100px;
+    padding: 10px;
+    border-radius: 100px;
+}
+
+.titulo {
+    font-family: cursive;
+    font-size: 3.1rem;
+}
+
+button {
+    background-color: #FFA500;
+    border: none;
+    width: 170px;
+    height: 60px;
+    cursor: pointer;
+    border-radius: 50px;
+    color: white;
+    font-size: 1.2rem;
+}
+
+button:hover {
+    background-color: #d68b00;
+    transition: 1s;
+}
+
+.botaoPed {
+    margin-right: 100px;
+}
+
+.circulo {
+    background-color: #8B5A2B;
+    width: 100%;
+    height: 95vh;
+    border-bottom-right-radius: 1000px 450px;
+    border-bottom-left-radius: 1000px 450px;
+    justify-items: center;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.sloganBotao {
+    margin-left: 200px;
+}
+
+.slogan {
+    color: white;
+    font-size: 3.4rem;
+}
+
+.botaoProd {  
+    margin-top: 20px;
+    margin-left: 150px;
+}
+
+.imgSlogan {
+    margin: auto;
+    width: 450px;
+    border-radius: 150px;
+}
+
+.tituloProdutos {
+    font-size: 3.0rem;
+    text-align: center;
+    margin: 50px;
+}
+
+.listaProdutos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: space-around; 
+}
+
+.produtos {
+    width: 800px;
+    height: 150px;
+    gap: 10px;
+    margin: 20px;
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+}
+
+.imgProduto {
+    width: 100px;
+    height: 100px;
+    border-radius: 20px;
+    margin: 20px;
+}
+
+.texto {
+    margin-top: 7%;
+    font-size: 1.8rem;
+}
+
+.preco {
+    margin-left: auto;
+    margin-top: 8%;
+    margin-right: 5%;
+    font-size: 1.5rem;
+}
+
+.quadroS {
+    width: 1000px;
+    height: 830px;
+    background-color: #8B5A2B;
+    margin: 30px;
+    padding: 10px;
+}
+
+.textoImg{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 50px;
+    padding: 20px;
+}
+
+.logoS {
+    width: 400px;
+    border-radius: 250px;
+    margin-left: 60px;
+}
+
+.tituloSug {
+    color: white;
+    font-size: 2.5rem;
+    margin-top: 20px;
+}
+
+.textoSug{
+    color: white;
+    width: 40%;   
+    font-size: 1.8rem;
+    margin-left: 5%;
+}
+
+form {
+    display:list-item;
+}
+
+.camposForm {
+    width: 90%;
+    margin-top: 10px;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 10px;
+    border: none;
+}
+
+.textForm {
+    width: 90%;
+    margin-top: 10px;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 10px;
+    border: none;
+    resize: none;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.2rem;
+}
+
+.spanErro {
+    color: white;
+    font-size: 1.2rem;
+    text-align: center;
+    width: 50%;
+}
+
+.botaoSug {
+    margin: 10px;
+}
+
+.sug {
+    color: white;
+    text-decoration: none;
+    margin-top: 20px;
+}
+
+footer {
+    background-color: #8B5A2B;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    margin-top: 50px;
+}
+
+/*Resposividade - Opção do Google dentro do Inspecionar - Dimensions: Responsive 663 x 768*/
+@media (max-width: 768px) {
+    header {
+        width: 230%;
+    }
+
+    .circulo {
+        width:  245%;
+    }
+
+    button {
+        width: 220px;
+        font-size: 1.6rem;
+    }
+
+    .sloganBotao {
+        margin-left: 10%;
+    }
+
+    .imgSlogan {
+        width: 350px;
+    }
+
+    .slogan {
+        font-size: 3.0rem;
+    }
+
+    main {
+        width: 230%;
+    }
+
+    .listaProdutos {
+        display: inline-block;
+    }
+
+    .botaoProd {
+        margin-left: 100px;
+    }
+
+    .texto {
+        font-size: 1.9rem;
+    }
+
+    .preco {
+        margin-right: 50px;
+        font-size: 1.6rem;
+    }
+
+    .quadroS {
+        width: 70%;
+    }
+
+    footer {
+        width: 250%;
+    }
+}

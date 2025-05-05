@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Reserva de Salas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .room-available {
+            background-color: #bbf7d0;
+            cursor: pointer;
+        }
+        .room-available:hover {
+            background-color: #86efac;
+        }
+        .room-booked {
+            background-color: #fecaca;
+        }
+        .room-selected {
+            background-color: #93c5fd;
+        }
+        .time-slot {
+            height: 60px;
+        }
+        .calendar-day {
+            min-width: 180px;
+        }
+        .calendar-day.today {
+            border: 2px solid #3b82f6;
+        }
+        #loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3b82f6;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Loading Overlay -->
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold">SalaReserva</h1>
+                    <p class="text-blue-100">Sistema de reserva de salas acadêmicas</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button id="user-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <span class="font-medium">Professor Silva</span>
+                            <i class="fas fa-user-circle text-2xl"></i>
+                        </button>
+                        <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Meu Perfil</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Configurações</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sair</a>
+                        </div>
+                    </div>
+                    <button id="notifications-button" class="relative focus:outline-none">
+                        <i class="fas fa-bell text-2xl"></i>
+                        <span class="absolute top-0 right-0 inline-block w-4 h-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">3</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Filters Section -->
+        <section class="mb-8 bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">Filtros</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label for="building" class="block text-sm font-medium text-gray-700 mb-1">Prédio</label>
+                    <select id="building" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <option value="">Todos</option>
+                        <option value="A">Prédio A</option>
+                        <option value="B">Prédio B</option>
+                        <option value="C">Prédio C</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="room-type" class="block text-sm font-medium text-gray-700 mb-1">Tipo de Sala</label>
+                    <select id="room-type" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <option value="">Todos</option>
+                        <option value="classroom">Sala de Aula</option>
+                        <option value="lab">Laboratório</option>
+                        <option value="auditorium">Auditório</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="capacity" class="block text-sm font-medium text-gray-700 mb-1">Capacidade</label>
+                    <select id="capacity" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <option value="">Qualquer</option>
+                        <option value="10">Até 10 pessoas</option>
+                        <option value="20">Até 20 pessoas</option>
+                        <option value="30">Até 30 pessoas</option>
+                        <option value="50">50+ pessoas</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="equipment" class="block text-sm font-medium text-gray-700 mb-1">Equipamentos</label>
+                    <select id="equipment" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <option value="">Qualquer</option>
+                        <option value="projector">Projetor</option>
+                        <option value="computer">Computadores</option>
+                        <option value="whiteboard">Quadro Branco</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-4 flex justify-between items-center">
+                <div>
+                    <label for="week-selector" class="block text-sm font-medium text-gray-700 mb-1">Semana</label>
+                    <div class="flex items-center space-x-2">
+                        <button id="prev-week" class="p-2 rounded-full hover:bg-gray-100">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <input type="week" id="week-selector" class="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <button id="next-week" class="p-2 rounded-full hover:bg-gray-100">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <button id="today-btn" class="px-3 py-1 bg-gray-200 rounded-md text-sm hover:bg-gray-300">Hoje</button>
+                    </div>
+                </div>
+                <button id="apply-filters" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Aplicar Filtros
+                </button>
+            </div>
+        </section>
+
+        <!-- Calendar View -->
+        <section class="mb-8">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Horário</th>
+                                <th scope="col" class="calendar-day px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Segunda</th>
+                                <th scope="col" class="calendar-day px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Terça</th>
+                                <th scope="col" class="calendar-day px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quarta</th>
+                                <th scope="col" class="calendar-day px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quinta</th>
+                                <th scope="col" class="calendar-day px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sexta</th>
+                            </tr>
+                        </thead>
+                        <tbody id="calendar-body" class="bg-white divide-y divide-gray-200">
+                            <!-- Time slots will be generated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Room Details Modal -->
+        <div id="room-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-medium text-gray-900" id="modal-title">Detalhes da Sala</h3>
+                        <button id="close-modal" class="text-gray-400 hover:text-gray-500">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="px-6 py-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-2">Informações da Sala</h4>
+                            <div class="space-y-2">
+                                <p><span class="font-medium">Nome:</span> <span id="room-name">Sala A101</span></p>
+                                <p><span class="font-medium">Prédio:</span> <span id="room-building">Prédio A</span></p>
+                                <p><span class="font-medium">Tipo:</span> <span id="room-type-detail">Sala de Aula</span></p>
+                                <p><span class="font-medium">Capacidade:</span> <span id="room-capacity">30 pessoas</span></p>
+                                <p><span class="font-medium">Equipamentos:</span> <span id="room-equipment">Projetor, Quadro Branco</span></p>
+                            </div>
+                            
+                            <h4 class="font-medium text-gray-900 mt-4 mb-2">Disponibilidade</h4>
+                            <div id="room-availability" class="space-y-2">
+                                <!-- Availability will be filled by JavaScript -->
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-2">Reservar Sala</h4>
+                            <form id="booking-form">
+                                <div class="mb-4">
+                                    <label for="booking-purpose" class="block text-sm font-medium text-gray-700 mb-1">Finalidade</label>
+                                    <select id="booking-purpose" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="class">Aula Regular</option>
+                                        <option value="exam">Prova/Avaliação</option>
+                                        <option value="meeting">Reunião</option>
+                                        <option value="event">Evento</option>
+                                        <option value="other">Outro</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="booking-group" class="block text-sm font-medium text-gray-700 mb-1">Turma/Disciplina</label>
+                                    <select id="booking-group" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="math101">Matemática 101</option>
+                                        <option value="physics201">Física 201</option>
+                                        <option value="history301">História 301</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="booking-date" class="block text-sm font-medium text-gray-700 mb-1">Data</label>
+                                    <input type="date" id="booking-date" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label for="booking-start" class="block text-sm font-medium text-gray-700 mb-1">Hora Início</label>
+                                        <select id="booking-start" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                                            <!-- Options will be filled by JavaScript -->
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="booking-end" class="block text-sm font-medium text-gray-700 mb-1">Hora Fim</label>
+                                        <select id="booking-end" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                                            <!-- Options will be filled by JavaScript -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="booking-notes" class="block text-sm font-medium text-gray-700 mb-1">Observações</label>
+                                    <textarea id="booking-notes" rows="3" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                                </div>
+                                <div class="flex justify-end space-x-3">
+                                    <button type="button" id="cancel-booking" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                        Cancelar
+                                    </button>
+                                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                        Confirmar Reserva
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div id="confirmation-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-medium text-gray-900">Confirmação de Reserva</h3>
+                        <button id="close-confirmation" class="text-gray-400 hover:text-gray-500">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="px-6 py-4">
+                    <p id="confirmation-message" class="mb-4">Sua reserva foi confirmada com sucesso!</p>
+                    <div class="bg-blue-50 p-4 rounded-md mb-4">
+                        <h4 class="font-medium text-blue-800 mb-2">Detalhes da Reserva:</h4>
+                        <p id="confirmation-details" class="text-blue-700"></p>
+                    </div>
+                    <div class="flex justify-end">
+                        <button id="confirm-ok" class="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">SalaReserva</h3>
+                    <p class="text-gray-300">Sistema de gerenciamento e reserva de salas acadêmicas para instituições de ensino.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Contato</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><i class="fas fa-envelope mr-2"></i> contato@salareserva.com</li>
+                        <li><i class="fas fa-phone mr-2"></i> (11) 1234-5678</li>
+                        <li><i class="fas fa-map-marker-alt mr-2"></i> São Paulo, SP</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Links Úteis</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-300 hover:text-white">Ajuda</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">Termos de Uso</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">Política de Privacidade</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 SalaReserva. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample data for rooms and bookings
+        const rooms = [
+            { id: 'A101', name: 'Sala A101', building: 'A', type: 'classroom', capacity: 30, equipment: ['projector', 'whiteboard'] },
+            { id: 'A102', name: 'Sala A102', building: 'A', type: 'classroom', capacity: 25, equipment: ['projector'] },
+            { id: 'B201', name: 'Sala B201', building: 'B', type: 'lab', capacity: 20, equipment: ['computer', 'projector'] },
+            { id: 'B202', name: 'Sala B202', building: 'B', type: 'lab', capacity: 15, equipment: ['computer'] },
+            { id: 'C301', name: 'Auditório C301', building: 'C', type: 'auditorium', capacity: 50, equipment: ['projector', 'sound'] },
+        ];
+
+        const bookings = [
+            { roomId: 'A101', purpose: 'class', group: 'math101', date: '2023-11-06', start: '08:00', end: '10:00', professor: 'Professor Silva' },
+            { roomId: 'A102', purpose: 'class', group: 'physics201', date: '2023-11-06', start: '10:00', end: '12:00', professor: 'Professor Oliveira' },
+            { roomId: 'B201', purpose: 'exam', group: 'history301', date: '2023-11-07', start: '14:00', end: '16:00', professor: 'Professor Santos' },
+            { roomId: 'C301', purpose: 'event', group: 'other', date: '2023-11-08', start: '18:00', end: '20:00', professor: 'Professor Costa' },
+        ];
+
+        // Time slots for the calendar
+        const timeSlots = [
+            '08:00 - 09:00', '09:00 - 10:00', '10:00 - 11:00', '11:00 - 12:00',
+            '12:00 - 13:00', '13:00 - 14:00', '14:00 - 15:00', '15:00 - 16:00',
+            '16:00 - 17:00', '17:00 - 18:00', '18:00 - 19:00', '19:00 - 20:00'
+        ];
+
+        // Current week dates
+        let currentWeekStart = new Date();
+        currentWeekStart.setDate(currentWeekStart.getDate() - currentWeekStart.getDay() + 1); // Start on Monday
+        currentWeekStart.setHours(0, 0, 0, 0);
+
+        // DOM elements
+        const calendarBody = document.getElementById('calendar-body');
+        const weekSelector = document.getElementById('week-selector');
+        const prevWeekBtn = document.getElementById('prev-week');
+        const nextWeekBtn = document.getElementById('next-week');
+        const todayBtn = document.getElementById('today-btn');
+        const applyFiltersBtn = document.getElementById('apply-filters');
+        const roomModal = document.getElementById('room-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const bookingForm = document.getElementById('booking-form');
+        const cancelBookingBtn = document.getElementById('cancel-booking');
+        const confirmationModal = document.getElementById('confirmation-modal');
+        const closeConfirmationBtn = document.getElementById('close-confirmation');
+        const confirmOkBtn = document.getElementById('confirm-ok');
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+        const notificationsButton = document.getElementById('notifications-button');
+        const loadingOverlay = document.getElementById('loading-overlay');
+
+        // Selected room and booking details
+        let selectedRoom = null;
+        let selectedTimeSlot = null;
+        let selectedDate = null;
+
+        // Initialize the calendar
+        function initCalendar() {
+            // Set up week selector
+            const year = currentWeekStart.getFullYear();
+            const month = String(currentWeekStart.getMonth() + 1).padStart(2, '0');
+            const day = String(currentWeekStart.getDate()).padStart(2, '0');
+            const weekStart = `${year}-${month}-${day}`;
+            weekSelector.value = weekStart;
+
+            // Generate calendar days
+            const days = [];
+            for (let i = 0; i < 5; i++) { // Monday to Friday
+                const date = new Date(currentWeekStart);
+                date.setDate(date.getDate() + i);
+                days.push(date);
+            }
+
+            // Mark today in the calendar
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            document.querySelectorAll('.calendar-day').forEach((el, index) => {
+                el.classList.remove('today');
+                if (days[index].getTime() === today.getTime()) {
+                    el.classList.add('today');
+                }
+            });
+
+            // Generate calendar body
+            calendarBody.innerHTML = '';
+            timeSlots.forEach(timeSlot => {
+                const row = document.createElement('tr');
+                row.className = 'time-slot';
+                
+                // Time slot cell
+                const timeCell = document.createElement('td');
+                timeCell.className = 'px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900';
+                timeCell.textContent = timeSlot;
+                row.appendChild(timeCell);
+
+                // Day cells
+                days.forEach(day => {
+                    const dayCell = document.createElement('td');
+                    dayCell.className = 'px-4 py-2 whitespace-nowrap text-sm text-gray-500';
+                    
+                    // Check for bookings in this time slot
+                    const [startTime, endTime] = timeSlot.split(' - ');
+                    const bookingsForSlot = bookings.filter(booking => {
+                        const bookingDate = new Date(booking.date);
+                        bookingDate.setHours(0, 0, 0, 0);
+                        return (
+                            bookingDate.getTime() === day.getTime() &&
+                            booking.start === startTime &&
+                            booking.end === endTime
+                        );
+                    });
+
+                    if (bookingsForSlot.length > 0) {
+                        // Room is booked
+                        const booking = bookingsForSlot[0];
+                        const room = rooms.find(r => r.id === booking.roomId);
+                        dayCell.innerHTML = `
+                            <div class="room-booked p-2 rounded-md">
+                                <div class="font-medium">${room.name}</div>
+                                <div class="text-xs">${booking.professor}</div>
+                                <div class="text-xs">${booking.group}</div>
+                            </div>
+                        `;
+                    } else {
+                        // Room is available - create a dropdown of available rooms
+                        const availableRooms = rooms.filter(room => {
+                            // In a real app, we would check room availability based on filters
+                            return true;
+                        });
+
+                        if (availableRooms.length > 0) {
+                            dayCell.innerHTML = `
+                                <select class="w-full p-2 rounded-md border border-gray-300 focus:border-blue-500 focus:ring-blue-500">
+                                    <option value="">Disponível</option>
+                                    ${availableRooms.map(room => 
+                                        `<option value="${room.id}">${room.name}</option>`
+                                    ).join('')}
+                                </select>
+                            `;
+
+                            // Add event listener to room selection
+                            const select = dayCell.querySelector('select');
+                            select.addEventListener('change', (e) => {
+                                if (e.target.value) {
+                                    selectedRoom = rooms.find(r => r.id === e.target.value);
+                                    selectedTimeSlot = timeSlot;
+                                    selectedDate = day;
+                                    openRoomModal();
+                                }
+                            });
+                        } else {
+                            dayCell.textContent = 'Nenhuma sala disponível';
+                        }
+                    }
+
+                    row.appendChild(dayCell);
+                });
+
+                calendarBody.appendChild(row);
+            });
+        }
+
+        // Open room modal with details
+        function openRoomModal() {
+            if (!selectedRoom || !selectedTimeSlot || !selectedDate) return;
+
+            // Set room details
+            document.getElementById('room-name').textContent = selectedRoom.name;
+            document.getElementById('room-building').textContent = `Prédio ${selectedRoom.building}`;
+            document.getElementById('room-type-detail').textContent = 
+                selectedRoom.type === 'classroom' ? 'Sala de Aula' : 
+                selectedRoom.type === 'lab' ? 'Laboratório' : 'Auditório';
+            document.getElementById('room-capacity').textContent = `${selectedRoom.capacity} pessoas`;
+            document.getElementById('room-equipment').textContent = 
+                selectedRoom.equipment.join(', ').replace('projector', 'Projetor').replace('whiteboard', 'Quadro Branco').replace('computer', 'Computadores').replace('sound', 'Sistema de Som');
+
+            // Set availability
+            const availabilityDiv = document.getElementById('room-availability');
+            availabilityDiv.innerHTML = `
+                <div class="bg-green-50 p-3 rounded-md">
+                    <p class="text-green-800 font-medium">Disponível para reserva:</p>
+                    <p>${formatDate(selectedDate)} - ${selectedTimeSlot}</p>
+                </div>
+            `;
+
+            // Set booking form defaults
+            document.getElementById('booking-date').value = formatDateInput(selectedDate);
+            
+            // Set time options
+            const [startTime, endTime] = selectedTimeSlot.split(' - ');
+            const startSelect = document.getElementById('booking-start');
+            const endSelect = document.getElementById('booking-end');
+            
+            startSelect.innerHTML = '';
+            endSelect.innerHTML = '';
+            
+            // Add time options (simplified for demo)
+            const times = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+            
+            times.forEach(time => {
+                const option = document.createElement('option');
+                option.value = time;
+                option.textContent = time;
+                startSelect.appendChild(option);
+                
+                const endOption = document.createElement('option');
+                endOption.value = time;
+                endOption.textContent = time;
+                endSelect.appendChild(endOption);
+            });
+            
+            // Set default times
+            startSelect.value = startTime;
+            endSelect.value = endTime;
+
+            // Show modal
+            roomModal.classList.remove('hidden');
+        }
+
+        // Format date for display
+        function formatDate(date) {
+            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            return date.toLocaleDateString('pt-BR', options);
+        }
+
+        // Format date for input field
+        function formatDateInput(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // Change week
+        function changeWeek(weeks) {
+            currentWeekStart.setDate(currentWeekStart.getDate() + (weeks * 7));
+            initCalendar();
+        }
+
+        // Show loading overlay
+        function showLoading() {
+            loadingOverlay.style.display = 'flex';
+        }
+
+        // Hide loading overlay
+        function hideLoading() {
+            loadingOverlay.style.display = 'none';
+        }
+
+        // Event listeners
+        prevWeekBtn.addEventListener('click', () => changeWeek(-1));
+        nextWeekBtn.addEventListener('click', () => changeWeek(1));
+        todayBtn.addEventListener('click', () => {
+            currentWeekStart = new Date();
+            currentWeekStart.setDate(currentWeekStart.getDate() - currentWeekStart.getDay() + 1); // Start on Monday
+            currentWeekStart.setHours(0, 0, 0, 0);
+            initCalendar();
+        });
+
+        weekSelector.addEventListener('change', (e) => {
+            const selectedDate = new Date(e.target.value);
+            if (!isNaN(selectedDate.getTime())) {
+                currentWeekStart = new Date(selectedDate);
+                initCalendar();
+            }
+        });
+
+        applyFiltersBtn.addEventListener('click', () => {
+            showLoading();
+            // Simulate API call with timeout
+            setTimeout(() => {
+                initCalendar();
+                hideLoading();
+            }, 500);
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            roomModal.classList.add('hidden');
+        });
+
+        cancelBookingBtn.addEventListener('click', () => {
+            roomModal.classList.add('hidden');
+        });
+
+        bookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const purpose = document.getElementById('booking-purpose').value;
+            const group = document.getElementById('booking-group').value;
+            const date = document.getElementById('booking-date').value;
+            const start = document.getElementById('booking-start').value;
+            const end = document.getElementById('booking-end').value;
+            const notes = document.getElementById('booking-notes').value;
+            
+            // In a real app, this would be an API call
+            showLoading();
+            setTimeout(() => {
+                // Create new booking
+                const newBooking = {
+                    roomId: selectedRoom.id,
+                    purpose,
+                    group,
+                    date,
+                    start,
+                    end,
+                    professor: 'Professor Silva', // Current user
+                    notes
+                };
+                
+                bookings.push(newBooking);
+                
+                // Update UI
+                roomModal.classList.add('hidden');
+                initCalendar();
+                hideLoading();
+                
+                // Show confirmation
+                const groupText = document.querySelector(`#booking-group option[value="${group}"]`).textContent;
+                const purposeText = document.querySelector(`#booking-purpose option[value="${purpose}"]`).textContent;
+                
+                document.getElementById('confirmation-message').textContent = 'Sua reserva foi confirmada com sucesso!';
+                document.getElementById('confirmation-details').innerHTML = `
+                    <p><strong>Sala:</strong> ${selectedRoom.name}</p>
+                    <p><strong>Data:</strong> ${formatDate(new Date(date))}</p>
+                    <p><strong>Horário:</strong> ${start} - ${end}</p>
+                    <p><strong>Finalidade:</strong> ${purposeText}</p>
+                    <p><strong>Turma:</strong> ${groupText}</p>
+                `;
+                
+                confirmationModal.classList.remove('hidden');
+            }, 1000);
+        });
+
+        closeConfirmationBtn.addEventListener('click', () => {
+            confirmationModal.classList.add('hidden');
+        });
+
+        confirmOkBtn.addEventListener('click', () => {
+            confirmationModal.classList.add('hidden');
+        });
+
+        userMenuButton.addEventListener('click', () => {
+            userMenu.classList.toggle('hidden');
+        });
+
+        notificationsButton.addEventListener('click', () => {
+            alert('Você tem 3 notificações não lidas');
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === roomModal) {
+                roomModal.classList.add('hidden');
+            }
+            if (e.target === confirmationModal) {
+                confirmationModal.classList.add('hidden');
+            }
+            if (!userMenu.contains(e.target) && e.target !== userMenuButton) {
+                userMenu.classList.add('hidden');
+            }
+        });
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            initCalendar();
+        });
+    </script>
+</body>
+</html>

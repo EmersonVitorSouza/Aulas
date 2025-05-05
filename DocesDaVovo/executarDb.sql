@@ -1,0 +1,13 @@
+CREATE DATABASE doces_vovo;
+
+USE doces_vovo;
+
+DROP TABLE sugestoes;
+
+CREATE TABLE sugestoes (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(60) NOT NULL,
+    email VARCHAR(60) NOT NULL,
+    mensagem TEXT NOT NULL,
+    data_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
