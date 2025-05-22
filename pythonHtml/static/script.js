@@ -8,15 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     const nome = document.getElementById("nome").value;
     const email = document.getElementById("email").value;
+    const senha = document.getElementById("senha").value;
 
     fetch("/cadastrar", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: `nome=${encodeURIComponent(nome)}&email=${encodeURIComponent(
-        email
-      )}`,
+      body: `nome=${encodeURIComponent(nome)}&email=${encodeURIComponent(email)}&senha=${encodeURIComponent(senha)}`,
     })
       .then((res) => res.text())
       .then((data) => {
@@ -40,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((alunos) => {
         let html = "";
         alunos.forEach((a) => {
-          html += `<tr><td>${a.id}</td><td>${a.nome}</td><td>${a.email}</td></tr>`;
+          html += `<tr><td>${a.id}</td><td>${a.nome}</td><td>${a.email}</td><td>${a.senha}</td></tr>`;
         });
         resultado.innerHTML =
           html || "<p colspan='3'>Nenhum aluno encontrado.</p>";
