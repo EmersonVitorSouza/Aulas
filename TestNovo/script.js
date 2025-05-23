@@ -1,5 +1,5 @@
 document
-  .getElementById("feedbackForm")
+  .getElementById("formulario")
   .addEventListener("submit", function (event) {
     event.preventDefault();
 

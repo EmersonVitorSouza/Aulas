@@ -10,19 +10,27 @@ body {
 }
 
 header {
-  background-color: #005bab; /* Azul Senac */
+  background-color: #005bab;
   color: white;
   padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 header img {
   width: 100px;
   height: auto;
-  margin-bottom: 10px;
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-bottom: 0;
 }
 
 nav {
-  background-color: #f58220; /* Laranja Senac */
+  background-color: #f58220;
   padding: 10px 0;
 }
 
