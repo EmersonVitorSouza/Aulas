@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h2 { color: #007BFF; }
+        ul { list-style: none; padding: 0; }
+        li { margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <h2>Relatório de Previsão de Faturamento</h2>
+    <p><strong>Último mês registrado:</strong> {{ resultado.proximo_mes }}</p>
+    <p><strong>Previsão para o próximo mês:</strong> R$ {{ resultado.previsao }}</p>
+
+    <h3>Histórico de Faturamento</h3>
+    <ul>
+        {% for item in resultado.historico %}
+            <li>{{ item['mes'] }}: R$ {{ item['faturamento'] }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

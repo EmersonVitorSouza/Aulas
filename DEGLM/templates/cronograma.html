@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cronograma Gerado</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Cronograma Gerado</h1>
+        <pre>{{ cronograma }}</pre>
+        <a href="{{ url_for('index') }}">Voltar</a>
+    </div>
+</body>
+</html>

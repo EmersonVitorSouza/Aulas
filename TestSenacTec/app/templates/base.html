@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}{% endblock %} - Sistema de Vendas</title>
+  </head>
+  <body>
+    <nav>
+      <a href="{{ url_for('index') }}">Início</a> |
+      <a href="{{ url_for('listar_produtos') }}">Produtos</a> |
+      <a href="{{ url_for('adicionar_produto') }}">Adicionar Produto</a> |
+      <a href="{{ url_for('adicionar_venda') }}">Adicionar Venda</a> |
+      <a href="{{ url_for('listar_vendas') }}">Vendas</a> |
+      <a href="{{ url_for('dashboard') }}">Relatótio de Vendas</a> |
+      <a href="{{ url_for('previsao') }}">Previsão de Faturamento</a> |
+      <a href="{{ url_for('chat') }}">Chat com GPT</a> |
+      <a href="{{ url_for('chatHug') }}">ChatHug</a> |
+      <a href="{{ url_for('chatDeep') }}">ChatDeep</a> 
+    </nav>
+    <hr />
+    {% block content %}{% endblock %}
+  </body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat com ChatGPT</title>
+</head>
+<body>
+    <h1>Chat com ChatGPT</h1>
+    <form method="POST">
+        <label for="pergunta">Pergunta:</label><br>
+        <textarea name="pergunta" rows="5" cols="50"></textarea><br><br>
+        <button type="submit">Enviar</button>
+    </form>
+
+    {% if resposta %}
+        <h2>Resposta:</h2>
+        <p>{{ resposta }}</p>
+    {% endif %}
+</body>
+</html>

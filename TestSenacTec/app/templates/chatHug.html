@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat com IA</title>
+</head>
+<body>
+    <h2>Fale com a IA</h2>
+    <form method="post">
+        <input type="text" name="pergunta" placeholder="Digite sua pergunta" required>
+        <button type="submit">Enviar</button>
+    </form>
+    {% if resposta %}
+        <h3>Resposta:</h3>
+        <p>{{ resposta }}</p>
+    {% endif %}
+</body>
+</html>

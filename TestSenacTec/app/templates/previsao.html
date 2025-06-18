@@ -1,0 +1,13 @@
+{% extends 'base.html' %} {% block content %}
+<h2>Previsão de Faturamento</h2>
+
+<p><strong>Último mês registrado:</strong> {{ resultado.proximo_mes }}</p>
+<p><strong>Previsão para o próximo mês:</strong> R$ {{ resultado.previsao }}</p>
+
+<h3>Histórico</h3>
+<ul>
+  {% for item in resultado.historico %}
+    <li>{{ item['mes'] }}: R$ {{ item['faturamento'] }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

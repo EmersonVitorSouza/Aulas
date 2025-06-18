@@ -1,0 +1,92 @@
+{% extends 'base.html' %} {% block content %}
+<h2>Dashboard</h2>
+
+<a
+  href="{{ url_for('gerar_relatorio_pdf') }}"
+  class="btn btn-primary"
+  target="_blank"
+>
+  Baixar Relatório em PDF
+</a>
+
+<h3>Quantidade vendidas</h3>
+<canvas id="graficoProduto"></canvas>
+
+<h3>Faturamento</h3>
+<canvas id="graficoFaturamento"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const vendasLabels = {{ vendas_por_produto | map(attribute=0) | list | tojson }};
+  const vendasData = {{ vendas_por_produto | map(attribute=1) | list | tojson }};
+
+  const faturamentoLabels = {{ faturamento_por_produto | map(attribute=0) | list | tojson | safe }};
+  const faturamentoDataArr = {{ faturamento_por_produto | map(attribute=1) | list | tojson | safe }};
+
+  // Cores variadas
+  const cores = [
+  'rgba(255, 99, 132, 0.7)',
+  'rgba(54, 162, 235, 0.7)',
+  'rgba(255, 206, 86, 0.7)',
+  'rgba(75, 192, 192, 0.7)',
+  'rgba(153, 102, 255, 0.7)',
+  'rgba(255, 159, 64, 0.7)',
+  'rgba(100, 255, 218, 0.7)'
+  ];
+
+  // Cria um dataset por produto
+  const datasetsVendas = vendasLabels.map((nome, i) => ({
+      label: nome,
+      data: [vendasData[i]],  // Apenas um valor
+      backgroundColor: cores[i % cores.length]
+  }));
+  new Chart(document.getElementById('graficoProduto'), {
+      type: 'bar',
+      data: {
+          labels: ['Vendas'], // Uma barra por produto na vertical
+          datasets: datasetsVendas
+      },
+      options: {
+          responsive: true,
+          plugins: {
+              legend: {
+                  display: true,
+                  position: 'top'
+              },
+              title: {
+                  display: true,
+                  text: 'Quantidade vendidas por Produto'
+              }
+          }
+      }
+  });
+
+  // Cria um dataset por produto
+  const datasetsFatura = faturamentoLabels.map((nome, i) => ({
+      label: nome,
+      data: [faturamentoDataArr[i]],  // Apenas um valor
+      backgroundColor: cores[i % cores.length]
+  }));
+
+  new Chart(document.getElementById('graficoFaturamento'), {
+      type: 'bar',
+      data: {
+          labels: ['Faturamento'], // Uma barra por produto na vertical
+          datasets: datasetsFatura
+      },
+      options: {
+          responsive: true,
+          plugins: {
+              legend: {
+                  display: true,
+                  position: 'top'
+              },
+              title: {
+                  display: true,
+                  text: 'Faturamento por Produto'
+              }
+          }
+      }
+  });
+</script>
+{% endblock %}

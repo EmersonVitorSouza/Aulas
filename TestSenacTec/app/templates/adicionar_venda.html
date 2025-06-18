@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Adicionar Venda{% endblock %}
+
+{% block content %}
+  <h2>Adicionar Venda</h2>
+  <form method="post">
+    <label for="produto_id">Produto:</label><br>
+    <select name="produto_id" required>
+      {% for produto in produtos %}
+      <option value="{{ produto[0] }}">{{ produto[1] }}</option>
+      {% endfor %}
+    </select><br><br>
+
+    <label for="data">Data (AAAA-MM-DD):</label><br>
+    <input type="date" name="data" required><br><br>
+
+    <label for="quantidade">Quantidade:</label><br>
+    <input type="number" name="quantidade" required><br><br>
+
+    <input type="submit" value="Registrar Venda">
+  </form>
+{% endblock %}
