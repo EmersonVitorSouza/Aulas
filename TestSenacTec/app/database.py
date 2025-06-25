@@ -21,7 +21,8 @@ cur.execute('''
     CREATE TABLE IF NOT EXISTS produtos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nome TEXT NOT NULL,
-        preco_unit REAL NOT NULL
+        preco_unit REAL NOT NULL,
+        imagem TEXT
     )
 ''')
 
