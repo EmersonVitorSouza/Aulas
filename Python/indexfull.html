@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechVision - Portal Digital</title>
+    <style>
+        /* Reset e Estilos Gerais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0a0a1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Efeitos de Neon */
+        .neon-text {
+            text-shadow: 0 0 5px #00f0ff, 0 0 10px #00f0ff, 0 0 20px #00f0ff;
+            color: #ffffff;
+        }
+
+        .neon-border {
+            box-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff inset;
+            border: 1px solid #00f0ff;
+        }
+
+        .neon-border-thin {
+            box-shadow: 0 0 5px #00f0ff;
+            border: 1px solid #00f0ff;
+        }
+
+        .neon-glow {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 5px #00f0ff, 0 0 10px #00f0ff inset;
+            }
+            to {
+                box-shadow: 0 0 15px #00f0ff, 0 0 30px #00f0ff inset;
+            }
+        }
+
+        /* Layout Principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+
+        /* Sistema de Abas */
+        .tab-system {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            background: rgba(0, 0, 0, 0.3);
+            color: #e0e0e0;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 12px 25px;
+            font-size: 1rem;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+        }
+
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #00f0ff;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            color: #00f0ff;
+        }
+
+        .tab-btn.active {
+            color: #00f0ff;
+        }
+
+        .tab-btn.active::before {
+            transform: scaleX(1);
+        }
+
+        /* Conteúdo das Abas */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Formulários */
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 30px;
+            background: rgba(10, 20, 30, 0.7);
+            position: relative;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00f0ff, #0066ff, #00f0ff);
+            z-index: -1;
+            filter: blur(5px);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00f0ff;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #00f0ff;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            box-shadow: 0 0 10px #00f0ff;
+        }
+
+        .btn {
+            background: linear-gradient(90deg, #0066ff, #00f0ff);
+            color: #ffffff;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: linear-gradient(90deg, #00f0ff, #0066ff);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 240, 255, 0.3);
+        }
+
+        /* Galeria de Imagens */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .image-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .image-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-caption {
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #ffffff;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .upload-area {
+            border: 2px dashed #00f0ff;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            background: rgba(0, 240, 255, 0.1);
+        }
+
+        .upload-area i {
+            font-size: 3rem;
+            color: #00f0ff;
+            margin-bottom: 15px;
+        }
+
+        .upload-area p {
+            color: #00f0ff;
+            margin-bottom: 10px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .tab-system {
+                flex-direction: column;
+            }
+
+            .tab-btn {
+                margin: 5px 0;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            .gallery-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Efeitos Especiais */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: -1;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #00f0ff;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <header>
+            <h1 class="neon-text">TECH<span style="color: #00f0ff">VISION</span></h1>
+            <p>Portal Digital Futurista</p>
+            <div id="userGreeting" style="margin-top: 10px; display: none;">
+                <span id="usernameDisplay" style="color: #00f0ff;"></span>
+                <button id="logoutBtn" style="background: none; border: none; color: #ff5555; cursor: pointer; margin-left: 10px;">Sair</button>
+            </div>
+        </header>
+
+        <div class="tab-system">
+            <button class="tab-btn active" data-tab="register">Criar Conta</button>
+            <button class="tab-btn" data-tab="login">Login</button>
+            <button class="tab-btn" data-tab="gallery">Galeria</button>
+        </div>
+
+        <!-- Aba de Registro -->
+        <div class="tab-content active" id="register">
+            <div class="form-container neon-border">
+                <h2 style="text-align: center; margin-bottom: 20px; color: #00f0ff;">CRIAR NOVA CONTA</h2>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="reg-username">Nome de Usuário</label>
+                        <input type="text" id="reg-username" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-email">E-mail</label>
+                        <input type="email" id="reg-email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">Senha</label>
+                        <input type="password" id="reg-password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-confirm">Confirmar Senha</label>
+                        <input type="password" id="reg-confirm" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn">Registrar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Aba de Login -->
+        <div class="tab-content" id="login">
+            <div class="form-container neon-border">
+                <h2 style="text-align: center; margin-bottom: 20px; color: #00f0ff;">ACESSAR CONTA</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="login-username">Nome de Usuário</label>
+                        <input type="text" id="login-username" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Senha</label>
+                        <input type="password" id="login-password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn">Entrar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Aba de Galeria -->
+        <div class="tab-content" id="gallery">
+            <div class="form-container neon-border">
+                <h2 style="text-align: center; margin-bottom: 20px; color: #00f0ff;">UPLOAD DE IMAGENS</h2>
+                <div class="upload-area" id="uploadArea">
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#00f0ff" viewBox="0 0 16 16">
+                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                        </svg>
+                    </div>
+                    <p>Arraste e solte sua imagem aqui ou clique para selecionar</p>
+                    <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                </div>
+                <div class="form-group">
+                    <label for="imageCaption">Legenda da Imagem</label>
+                    <input type="text" id="imageCaption" class="form-control" placeholder="Digite uma legenda para sua imagem">
+                </div>
+                <button id="uploadBtn" class="btn">Enviar Imagem</button>
+            </div>
+
+            <div id="galleryDisplay" class="gallery-container">
+                <!-- As imagens carregadas serão exibidas aqui -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sistema de Abas
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.getAttribute('data-tab');
+                
+                // Remove classe active de todos os botões e conteúdos
+                tabBtns.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Adiciona classe active ao botão e conteúdo clicado
+                btn.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Efeito de partículas
+        const particlesContainer = document.getElementById('particles');
+        
+        function createParticles() {
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Posição aleatória
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100 + 100; // Começa abaixo da tela
+                
+                // Tamanho aleatório
+                const size = Math.random() * 3 + 1;
+                
+                // Duração da animação aleatória
+                const duration = Math.random() * 10 + 10;
+                
+                // Atraso aleatório
+                const delay = Math.random() * 5;
+                
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // Sistema de autenticação
+        const users = JSON.parse(localStorage.getItem('techvision_users')) || [];
+        const userGreeting = document.getElementById('userGreeting');
+        const usernameDisplay = document.getElementById('usernameDisplay');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Verifica se há usuário logado
+        const currentUser = JSON.parse(localStorage.getItem('techvision_currentUser'));
+        if (currentUser) {
+            showUserGreeting(currentUser.username);
+        }
+
+        // Cadastro de usuário
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('reg-username').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            const confirm = document.getElementById('reg-confirm').value;
+            
+            if (password !== confirm) {
+                alert('As senhas não coincidem!');
+                return;
+            }
+            
+            if (users.some(user => user.username === username)) {
+                alert('Nome de usuário já existe!');
+                return;
+            }
+            
+            if (users.some(user => user.email === email)) {
+                alert('E-mail já cadastrado!');
+                return;
+            }
+            
+            users.push({ username, email, password });
+            localStorage.setItem('techvision_users', JSON.stringify(users));
+            
+            alert('Conta criada com sucesso! Agora você pode fazer login.');
+            document.querySelector('[data-tab="login"]').click();
+            
+            // Limpa o formulário
+            this.reset();
+        });
+
+        // Login de usuário
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (!user) {
+                alert('Usuário ou senha incorretos!');
+                return;
+            }
+            
+            localStorage.setItem('techvision_currentUser', JSON.stringify(user));
+            showUserGreeting(user.username);
+            
+            alert('Login realizado com sucesso!');
+            document.querySelector('[data-tab="gallery"]').click();
+            
+            // Limpa o formulário
+            this.reset();
+        });
+
+        // Logout
+        logoutBtn.addEventListener('click', function() {
+            localStorage.removeItem('techvision_currentUser');
+            userGreeting.style.display = 'none';
+            alert('Você saiu da sua conta.');
+        });
+
+        function showUserGreeting(username) {
+            usernameDisplay.textContent = `Bem-vindo, ${username}!`;
+            userGreeting.style.display = 'block';
+        }
+
+        // Restringe acesso à galeria se não estiver logado
+        document.querySelector('[data-tab="gallery"]').addEventListener('click', function() {
+            if (!localStorage.getItem('techvision_currentUser')) {
+                alert('Por favor, faça login para acessar a galeria.');
+                document.querySelector('[data-tab="login"]').click();
+                return false;
+            }
+        });
+
+        // Sistema de upload de imagens
+        const uploadArea = document.getElementById('uploadArea');
+        const imageUpload = document.getElementById('imageUpload');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const galleryDisplay = document.getElementById('galleryDisplay');
+        const imageCaption = document.getElementById('imageCaption');
+
+        uploadArea.addEventListener('click', () => {
+            imageUpload.click();
+        });
+
+        imageUpload.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                const fileName = this.files[0].name;
+                uploadArea.querySelector('p').textContent = `Arquivo selecionado: ${fileName}`;
+            }
+        });
+
+        uploadBtn.addEventListener('click', function() {
+            if (!imageUpload.files || !imageUpload.files[0]) {
+                alert('Por favor, selecione uma imagem primeiro.');
+                return;
+            }
+
+            const file = imageUpload.files[0];
+            const caption = imageCaption.value || 'Sem legenda';
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                // Cria o card da imagem
+                const imageCard = document.createElement('div');
+                imageCard.className = 'image-card neon-border-thin';
+                
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.alt = caption;
+                
+                const captionElement = document.createElement('div');
+                captionElement.className = 'image-caption';
+                captionElement.textContent = caption;
+                
+                imageCard.appendChild(img);
+                imageCard.appendChild(captionElement);
+                
+                // Adiciona à galeria
+                galleryDisplay.prepend(imageCard);
+                
+                // Limpa o formulário
+                imageUpload.value = '';
+                imageCaption.value = '';
+                uploadArea.querySelector('p').textContent = 'Arraste e solte sua imagem aqui ou clique para selecionar';
+                
+                // Efeito visual
+                imageCard.style.opacity = '0';
+                setTimeout(() => {
+                    imageCard.style.transition = 'opacity 0.5s ease';
+                    imageCard.style.opacity = '1';
+                }, 10);
+            };
+            
+            reader.readAsDataURL(file);
+        });
+
+        // Efeito de arrastar e soltar
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('neon-glow');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('neon-glow');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('neon-glow');
+            
+            if (e.dataTransfer.files.length) {
+                imageUpload.files = e.dataTransfer.files;
+                const fileName = e.dataTransfer.files[0].name;
+                uploadArea.querySelector('p').textContent = `Arquivo selecionado: ${fileName}`;
+            }
+        });
+    </script>
+</body>
+</html>
