@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitação de Acesso</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        .input-error {
+            border-color: #ef4444 !important;
+        }
+        
+        .shake {
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md animate-fade-in">
+        <div class="bg-white rounded-xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
+            <!-- Header with gradient -->
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 p-6 text-white">
+                <div class="flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+                    </svg>
+                    <h1 class="text-2xl font-bold">Solicitação de Acesso</h1>
+                </div>
+                <p class="text-blue-100 mt-2 text-sm">Preencha o formulário para solicitar acesso aos sistemas.</p>
+            </div>
+            
+            <!-- Form -->
+            <form id="accessForm" class="p-6 space-y-6" onsubmit="return validateForm(event)">
+                <!-- Name Field -->
+                <div class="space-y-2">
+                    <label for="name" class="block text-sm font-medium text-gray-700">Nome completo</label>
+                    <div class="relative">
+                        <input type="text" id="name" name="name" 
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                            placeholder="Digite seu nome completo">
+                    </div>
+                    <p id="name-error" class="text-red-500 text-xs hidden">Por favor, insira seu nome completo</p>
+                </div>
+                
+                <!-- Email Field -->
+                <div class="space-y-2">
+                    <label for="email" class="block text-sm font-medium text-gray-700">E-mail institucional</label>
+                    <div class="relative">
+                        <input type="email" id="email" name="email" 
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                            placeholder="seu.email@orgao.gov.br">   
+                    </div>
+                    <p id="email-error" class="text-red-500 text-xs hidden">Use um e-mail institucional válido (@orgao.gov.br)</p>
+                </div>
+                
+                <!-- System Field -->
+                <div class="space-y-2">
+                    <label for="system" class="block text-sm font-medium text-gray-700">Sistema desejado</label>
+                    <div class="relative">
+                        <select id="system" name="system" 
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 appearance-none">
+                            <option value="">Selecione um sistema</option>
+                            <option value="RH">Sistema de RH</option>
+                            <option value="Financeiro">Sistema Financeiro</option>
+                            <option value="Protocolo">Sistema de Protocolo</option>
+                            <option value="TI">Sistema de TI</option>
+                            <option value="Compras">Sistema de Compras</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p id="system-error" class="text-red-500 text-xs hidden">Por favor, selecione um sistema</p>
+                </div>
+                
+                <!-- Reason Field -->
+                <div class="space-y-2">
+                    <label for="reason" class="block text-sm font-medium text-gray-700">Justificativa do acesso</label>
+                    <textarea id="reason" name="reason" rows="4" 
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                        placeholder="Descreva por que você precisa de acesso a este sistema"></textarea>
+                    <p id="reason-error" class="text-red-500 text-xs hidden">Por favor, forneça uma justificativa</p>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" 
+                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-3 px-4 rounded-lg font-medium hover:from-blue-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 transform hover:scale-[1.01] active:scale-[0.99]">
+                    <span class="flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd" />
+                        </svg>
+                        Enviar Solicitação
+                    </span>
+                </button>
+                
+                <!-- Success Message (hidden by default) -->
+                <div id="success-message" class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
+                    <strong class="font-bold">Sucesso!</strong>
+                    <span class="block sm:inline">Sua solicitação foi enviada com sucesso.</span>
+                </div>
+            </form>
+            
+            <!-- Footer -->
+            <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+                <p class="text-xs text-gray-500 text-center">Faça sua solicitação aqui!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function validateForm(event) {
+            event.preventDefault();
+            
+            // Reset previous errors
+            document.querySelectorAll('.input-error').forEach(el => {
+                el.classList.remove('input-error');
+                el.classList.remove('shake');
+            });
+            document.querySelectorAll('[id$="-error"]').forEach(el => {
+                el.classList.add('hidden');
+            });
+            
+            // Get form values
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const system = document.getElementById("system").value;
+            const reason = document.getElementById("reason").value.trim();
+            
+            let isValid = true;
+            
+            // Validate name
+            if (!name) {
+                document.getElementById("name").classList.add('input-error', 'shake');
+                document.getElementById("name-error").classList.remove('hidden');
+                isValid = false;
+            }
+            
+            // Validate email
+            if (!email) {
+                document.getElementById("email").classList.add('input-error', 'shake');
+                document.getElementById("email-error").classList.remove('hidden');
+                document.getElementById("email-error").textContent = "Por favor, insira seu e-mail";
+                isValid = false;
+            } else if (!email.endsWith("@orgao.gov.br")) {
+                document.getElementById("email").classList.add('input-error', 'shake');
+                document.getElementById("email-error").classList.remove('hidden');
+                document.getElementById("email-error").textContent = "Use um e-mail institucional válido (@orgao.gov.br)";
+                isValid = false;
+            }
+            
+            // Validate system
+            if (!system) {
+                document.getElementById("system").classList.add('input-error', 'shake');
+                document.getElementById("system-error").classList.remove('hidden');
+                isValid = false;
+            }
+            
+            // Validate reason
+            if (!reason) {
+                document.getElementById("reason").classList.add('input-error', 'shake');
+                document.getElementById("reason-error").classList.remove('hidden');
+                isValid = false;
+            }
+            
+            // If form is valid, show success message
+            if (isValid) {
+                document.getElementById("success-message").classList.remove('hidden');
+                document.getElementById("accessForm").reset();
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    document.getElementById("success-message").classList.add('hidden');
+                }, 5000);
+            }
+            
+            return false;
+        }
+        
+        // Add animation to form elements when they get focus
+        document.querySelectorAll('input, select, textarea').forEach(element => {
+            element.addEventListener('focus', () => {
+                element.classList.add('ring-2', 'ring-blue-300');
+            });
+            
+            element.addEventListener('blur', () => {
+                element.classList.remove('ring-2', 'ring-blue-300');
+            });
+        });
+    </script>
+</body>
+</html>
